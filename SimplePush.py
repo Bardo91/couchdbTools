@@ -1,5 +1,5 @@
 ## import couch
-import pycouchdb
+import couchdb
 
 def printOptions():
     print('---------------------------------------------------------------');
@@ -18,9 +18,13 @@ def showDatabases(_server):
     
 def showDatabaseContent(_server):
     dbName = input('Type db Name: ');
-    for db in _server:
-        if db == dbName:
-            print(db);
+    #EXAMPLE OF QUERY
+    map_fun = '''function(doc) { if (doc.type == 'Person') emit(doc.name, null); }'''
+    db = _server[dbName];
+    db.query(map_fun);
+    for doc in db:
+        print(doc);
+    
 
 def createDatabase(_server):
     dbName = input('Type db Name: ');
@@ -38,7 +42,7 @@ def addDoc(_server):
 def main():
     ## Create a handle of server
     ## server = pycouchdb.Server('http://example.com:5984/');
-    server = pycouchdb.Server();    ## Without arguments localhost 5984
+    server = couchdb.Server();    ## Without arguments localhost 5984
     
     cmd = '999';
     while cmd != '0':
