@@ -16,13 +16,16 @@ def showDatabases(_server):
     for db in _server:
         print(db);
     
-def showDatabaseContent(_server):
+def queryDatabase(_server):
     dbName = input('Type db Name: ');
+    key = input('Type the key that need to have docs: ');
     #EXAMPLE OF QUERY
-    map_fun = '''function(doc) { if (doc.type == 'Person') emit(doc.name, null); }'''
+    tilde = '\'';
+    map_fun = '''function(doc) { var name, type; if (doc.''' + key + '''){key = doc.''' + key + '''; emit(key,null)} }'''
+    print('Using this query: ' + map_fun);
     db = _server[dbName];
-    db.query(map_fun);
-    for doc in db:
+    result = db.query(map_fun);
+    for doc in result:
         print(doc);
     
 
@@ -51,7 +54,7 @@ def main():
         if cmd == '1':
             showDatabases(server)
         elif cmd == '2':
-            showDatabaseContent(server)
+            queryDatabase(server)
         elif cmd == '3':
             createDatabase(server);
         elif cmd == '4':
