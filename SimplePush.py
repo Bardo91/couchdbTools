@@ -21,7 +21,7 @@ def queryDatabase(_server):
     key = input('Type the key that need to have docs: ');
     #EXAMPLE OF QUERY
     tilde = '\'';
-    map_fun = '''function(doc) { var name, type; if (doc.''' + key + '''){key = doc.''' + key + '''; emit(key,null)} }'''
+    map_fun = '''function(doc) { var name, type; if (doc.''' + key + '''){key = doc.''' + key + '''; emit(key,doc)} }'''
     print('Using this query: ' + map_fun);
     db = _server[dbName];
     result = db.query(map_fun);
@@ -40,7 +40,15 @@ def deleteDatabase(_server):
     print('Deleted database: ' + dbName);
 
 def addDoc(_server):
-    print('Not implemeted now');
+    dbName = input('Type db Name: ');
+    dict = {};
+    n = input('How many keys will have the doc?')
+    for x in range(0, int(n)):
+        key = input('Type key of parameter to be added: ');
+        value = input('Type value of the given key: ');
+        dict[key] = value;	
+    db = _server[dbName];
+    db.save(dict);
 
 def main():
     ## Create a handle of server
